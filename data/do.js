@@ -109,7 +109,7 @@ document.addEventListener("click", function(e) {
                 document.querySelectorAll("section.new")[0].classList.toggle("hidden");
 
                 // requesting raw json
-                let source = "data/vault";
+                let source = "data/vault?t"+Math.floor(Date.now());;
                 let request = new XMLHttpRequest();
                 request.open("GET", source);
                 request.responseType = "text";
