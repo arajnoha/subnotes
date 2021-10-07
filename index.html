@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="cs">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="data/neon.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Subnotes - private, secure, flatfile encrypted note-taking app.">
+    <link rel="icon" type="image/png" href="data/favicon.png">
+</head>
+<body>
+
+<section class="old hidden">
+
+    <button id="add-note">+ Note</button>
+    <button id="add-folder">+ Folder</button>
+    <button id="logout">Logout</button>
+    <button id="delete-folder" class="hidden">Delete</button>
+    <button id="rename-folder" class="hidden">Rename</button>
+    <hr>
+    <ul id="loop">
+    </ul>
+
+</section>
+<section class="new">
+
+    <form action="" method="post">
+    <input type="password" name="password" placeholder="Fill in your password here..." id="password" autofocus>
+    <input type="submit" id="login" value="Log in/Sign up">
+    <p class="infobox">If this is your first install, your password will be hashed and saved upon the first submit. Then you can log in normally.</p>
+    </form>
+
+</section>
+<section class="detail hidden">
+    <button id="go-back">Quit</button>
+    <button id="save-note" class="hidden">Save</button>
+    <button id="logout">Logout</button>
+    <button id="delete-note">Delete</button>
+    <button id="rename-note">Rename</button>
+    <hr>
+    <textarea id="single"></textarea>
+</section>
+
+<script src="data/crypto.js"></script>
+<script src="data/do.js"></script>
+</body>
+</html>

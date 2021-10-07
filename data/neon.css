@@ -1,0 +1,106 @@
+html,body {
+    height: 100%;
+}
+html,body,div,ul,li,hr {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    max-width: 720px;
+    margin: 0 auto;
+    font: 15px/22px sans-serif;
+    padding: 12px;
+}
+hr {
+    outline: 0;
+    border: 1px solid #dbdbdb;
+    margin: 10px 0;
+}
+ul li {
+    list-style: none;
+    padding: 3px 0;
+    margin: 2px 0;
+    cursor: pointer;
+    user-select: none;
+}
+li.file {
+    color: #af4040;
+}
+li.folder {
+    color: #4b40af;
+}
+li.go-back {
+    color: #797979;
+}
+li.folder::after {
+    content: "/";
+}
+li.go-back::after {
+    content: "";
+}
+input[type="password"] {
+    height: 28px;
+    width: 280px;
+    display: inline-block;
+    outline: 0;
+    border: 1px solid #ccc;
+}
+form {
+    text-align: center;
+    border: 1px solid #ccc;
+    padding: 40px;
+}
+label {
+    font-size: 15px;
+    line-height: 22px;
+    color: #797979;
+    padding-bottom: 20px;
+    display: inline-block;
+}
+button,
+input[type="submit"] {
+    display: inline-block;
+    outline: 0;
+    border: 0;
+    font-size: 15px;
+    line-height: 22px;
+    cursor: pointer;
+    margin: 5px 10px 5px 0;
+    background: #fff;
+    color: #797979;
+}
+button#add-note,
+button#save-note {
+    color: #af4040;
+}
+button#add-folder {
+    color: #4b40af;
+}
+button#logout,
+button#delete-note,
+button#delete-folder,
+button#rename-note,
+button#rename-folder {
+    float: right;
+}
+textarea {
+    width: 100%;
+    max-width: 100%;
+    height: calc(100% - 70px);
+    resize: none;
+    border: 0;
+    outline: 0;
+    font: inherit;
+}
+.infobox {
+    padding: 10px;
+    border-radius: 4px;
+    background: #c9d6fa;
+}
+section {
+    height: 100%;
+}
+.hidden {
+    display: none;
+}
