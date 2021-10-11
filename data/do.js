@@ -164,6 +164,7 @@ document.addEventListener("click", function(e) {
             nameFilter = data.entries.filter(object => object.name === currentName);
             contextFilter = nameFilter.find(object => object.hasParent === context);
             area.value = contextFilter.content;
+            document.querySelector("#note-name").textContent = currentName;
             // save loaded content to buffer and compare it on keyup to show save button
             areaBuffer = area.value;
             area.focus();

@@ -84,6 +84,20 @@ button#rename-note,
 button#rename-folder {
     float: right;
 }
+#note-name {
+    position: absolute;
+    top: 33px;
+    left: 50%;
+    width: auto;
+    text-align: center;
+    font-size: 15px;
+    line-height: 22px;
+    color: #ccc;
+    background: #fff;
+    display: inline-block;
+    transform: translateX(-50%);
+    padding: 0 10px;
+}
 textarea {
     width: 100%;
     max-width: 100%;
@@ -100,6 +114,7 @@ textarea {
 }
 section {
     height: 100%;
+    position: relative;
 }
 .hidden {
     display: none;
