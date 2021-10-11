@@ -24,26 +24,31 @@ function populateLoop(data, context) {
     // insert go-up button
     if (context !== false) {
         const li = document.createElement("li");
-        const parent = rows.find(object => object.name === context);
+        const parent = rows.find(object => object.id == context);
         li.textContent = "↩";
-        li.dataset.go = parent.hasParent;
+        li.dataset.id = parent.hasParent;
         li.className = "folder go-back";
         loop.appendChild(li);
         document.querySelector("#delete-folder").classList.remove("hidden");
+        document.querySelector("#note-name").textContent = parent.name;
     } else {
         document.querySelector("#delete-folder").classList.add("hidden");
+        document.querySelector("#note-name").textContent = "";
     }
 
     // fill the loop
     for (let i = 0; i < root.length; i++) {
         const li = document.createElement("li");
             li.textContent = root[i].name;
+            li.dataset.id = root[i].id;
             if (root[i].isParent === true) {
                 li.className = "folder";
-                li.dataset.go = root[i].name;
             } else {
                 li.className = "file";
             }
+            let date = new Date(root[i].id);
+            let options = {year: 'numeric', month: 'numeric', day: 'numeric'};
+            li.dataset.date = date.toLocaleDateString('cs', options);
             loop.appendChild(li);
     }
 }
@@ -109,7 +114,7 @@ document.addEventListener("click", function(e) {
                 document.querySelectorAll("section.new")[0].classList.toggle("hidden");
 
                 // requesting raw json
-                let source = "data/vault?t"+Math.floor(Date.now());;
+                let source = "data/vault?t"+Math.floor(Date.now());
                 let request = new XMLHttpRequest();
                 request.open("GET", source);
                 request.responseType = "text";
@@ -120,7 +125,6 @@ document.addEventListener("click", function(e) {
                     data = request.response;
                     //decrypt raw data before parsing it as objects
                     decrypted = CryptoJS.AES.decrypt(data, password).toString(CryptoJS.enc.Utf8);
-                    if (!decrypted) {console.log(1)}
                     data = JSON.parse(decrypted);
                     populateLoop(data, false);
                 }
@@ -129,6 +133,7 @@ document.addEventListener("click", function(e) {
                     if(confirm("The vault file is missing. Do you want to create a new one?")) {
                         data.entries = [];
                         let fresh = {
+                            id: Math.floor(Date.now()),
                             name: "Default note",
                             hasParent: false,
                             isParent: false,
@@ -140,6 +145,7 @@ document.addEventListener("click", function(e) {
             } else if (verify.response === "3") {
                 data.entries = [];
                 let fresh = {
+                    id: Math.floor(Date.now()),
                     name: "Default note",
                     hasParent: false,
                     isParent: false,
@@ -152,7 +158,7 @@ document.addEventListener("click", function(e) {
     }
     if (e.target.closest("#loop > li")) {
         if (e.target.classList.contains("folder")) {
-            context = (e.target.dataset.go === "false") ? false : e.target.dataset.go;
+            context = (e.target.dataset.id === "false") ? false : e.target.dataset.id;
             populateLoop(data, context);
         }
         if (e.target.classList.contains("file")) {
@@ -213,6 +219,7 @@ document.addEventListener("click", function(e) {
         if (newName) {
             // create new entry in the "entries" array of objects
             let entry = {
+                id: Math.floor(Date.now()),
                 name: newName,
                 hasParent: context,
                 isParent: false,
@@ -228,6 +235,7 @@ document.addEventListener("click", function(e) {
         if (newName) {
             // create new entry in the "entries" array of objects
             let entry = {
+                id: Math.floor(Date.now()),
                 name: newName,
                 hasParent: context,
                 isParent: true
