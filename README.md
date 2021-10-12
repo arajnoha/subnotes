@@ -7,7 +7,7 @@ Key features:
 - **tamper-proof** - no need to trust even your neighbour, as no sensitive data leaves the client, you can let a friend install subnotes on their server for you and then compare
  checksum of javascript files loaded in your browser from said server with the ones in this github repo. This way, security is guaranteed regardless of location
 
-[Screenshot of subnotes listing](data/subnotes-listing.png)
+![Screenshot of subnotes listing](data/subnotes-listing.png)
 
 ### Install
 Simply copy this repository on your PHP server and access its URL from the browser. No plugins required.
