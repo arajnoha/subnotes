@@ -86,13 +86,6 @@ input[type="submit"] {
     background: #fff;
     color: #797979;
 }
-button#add-note,
-button#save-note {
-    color: #af4040;
-}
-button#add-folder {
-    color: #4b40af;
-}
 button#logout,
 button#delete-note,
 button#delete-folder,
@@ -103,17 +96,32 @@ button#rename-folder {
 button {
     width: 22px;
     height: 22px;
+    border-radius: 50%;
+    padding: 4px;
+    box-sizing: content-box;
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #dfdfdf;
+    transition: background-color 298ms ease;
+}
+button:hover {
+    background-color: #ccc;
 }
 button#add-folder {
     background-image: url("ui/add-folder.svg");
+    background-color: #c2bdec;
 }
 button#add-note {
     background-image: url("ui/add-file.svg");
+    background-color: #c9e9ee;
 }
 button#go-back {
     background-image: url("ui/arrow-left.svg");
 }
 button#save-note {
+    background-size: 65%;
+    background-color: #c9e9ee;
     background-image: url("ui/save.svg");
 }
 button#logout {
