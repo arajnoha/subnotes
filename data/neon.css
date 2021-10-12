@@ -119,13 +119,15 @@ button#save-note {
 button#logout {
     background-image: url("ui/logout.svg");
 }
-button#delete-note {
+button#delete-note,
+button#delete-folder {
     background-image: url("ui/delete.svg");
 }
-button#rename-note {
+button#rename-note,
+button#rename-folder {
     background-image: url("ui/rename.svg");
 }
-#note-name {
+.note-name {
     position: absolute;
     top: 33px;
     left: 50%;

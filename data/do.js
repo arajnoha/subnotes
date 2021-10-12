@@ -8,6 +8,7 @@ let currentName;
 let nameFilter;
 let contextFilter;
 let areaBuffer;
+let pileUpArr;
 
 function populateLoop(data, context) {
     // get all records
@@ -30,10 +31,12 @@ function populateLoop(data, context) {
         li.className = "folder go-back";
         loop.appendChild(li);
         document.querySelector("#delete-folder").classList.remove("hidden");
-        document.querySelector("#note-name").textContent = parent.name;
+        document.querySelector("#rename-folder").classList.remove("hidden");
+        document.querySelectorAll(".note-name")[0].textContent = parent.name;
     } else {
         document.querySelector("#delete-folder").classList.add("hidden");
-        document.querySelector("#note-name").textContent = "";
+        document.querySelector("#rename-folder").classList.add("hidden");
+        document.querySelectorAll(".note-name")[0].textContent = "";
     }
 
     // fill the loop
@@ -50,6 +53,13 @@ function populateLoop(data, context) {
             let options = {year: 'numeric', month: 'numeric', day: 'numeric'};
             li.dataset.date = date.toLocaleDateString('cs', options);
             loop.appendChild(li);
+    }
+}
+function pileUp(entry) {
+    let element = data.entries.find(object => object.id === entry);
+    pileUpArr.push(element);
+    if (element.isParent === true) {
+        
     }
 }
 
@@ -170,7 +180,7 @@ document.addEventListener("click", function(e) {
             nameFilter = data.entries.filter(object => object.name === currentName);
             contextFilter = nameFilter.find(object => object.hasParent === context);
             area.value = contextFilter.content;
-            document.querySelector("#note-name").textContent = currentName;
+            document.querySelectorAll(".detail .note-name")[0].textContent = currentName;
             // save loaded content to buffer and compare it on keyup to show save button
             areaBuffer = area.value;
             area.focus();
@@ -195,6 +205,14 @@ document.addEventListener("click", function(e) {
             document.querySelectorAll("section.detail")[0].classList.toggle("hidden");
         }
     }
+    if (e.target.id === "rename-folder") {
+        let oldName = data.entries.find(object => object.id == context);
+        let newName = prompt("Type in new name of this folder '"+oldName.name+"':");
+        if (newName) {
+            oldName.name = newName;
+            saveAndRedraw();
+        }
+    }
     if (e.target.id === "delete-note") {
         if (confirm("Do you really want to delete '"+contextFilter.name+"'?")) {
             let index = data.entries.indexOf(contextFilter);
@@ -209,6 +227,7 @@ document.addEventListener("click", function(e) {
             // find deepest elements
             // traverse the deleation up to context folder
             // redraw loop
+            pileUp(context);
         }
     }
     if (e.target.id === "logout") {

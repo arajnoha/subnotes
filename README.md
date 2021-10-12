@@ -12,13 +12,6 @@ Simply copy this repository on your PHP server and access its URL from the brows
 You will choose your password on the first opening as it recognises no hash generated on the server.
 The installation is very small, but you can go even further and minify the content of data/ if you need.
 
-### TODO
-- delete folder - needs object traversing due to faux structure, this will be the very next feature
-- rename folder - needs object traversing due to faux structure, this will be the very next feature
-- fulltext search - will be simple as the whole vault is loaded and decrypted on the client
-- timestamps
-- sharing - this will be a bit tricky, shared notes would have to be duplicated from the array of objects and reencrypted in a separate _shared vault_ with a separate password and a viewer to display it
-
 ### Get along
 Merge requests are welcomed.
 Get in touch with me on adam@rajnoha.com for questions, tips and chitchat.
