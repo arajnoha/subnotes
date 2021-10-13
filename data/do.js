@@ -8,7 +8,7 @@ let currentName;
 let nameFilter;
 let contextFilter;
 let areaBuffer;
-let pileUpArr;
+let pileUpArr = [];
 
 function populateLoop(data, context) {
     // get all records
@@ -56,10 +56,11 @@ function populateLoop(data, context) {
     }
 }
 function pileUp(entry) {
-    let element = data.entries.find(object => object.id === entry);
-    pileUpArr.push(element);
-    if (element.isParent === true) {
-        
+    let element = data.entries.find(object => object.id == entry);
+    let filter = data.entries.filter(object => object.hasParent == entry);
+    pileUpArr.push(data.entries.indexOf(element));
+    for (el of filter) {
+	pileUp(el.id);
     }
 }
 
@@ -223,11 +224,17 @@ document.addEventListener("click", function(e) {
         }
     }
     if (e.target.id === "delete-folder") {
-        if (confirm("Do you really want to delete '"+context+"'?")) {
-            // find deepest elements
-            // traverse the deleation up to context folder
+	    let current = data.entries.find(object => object.id == context);
+        if (confirm("Do you really want to delete '"+current.name+"'?")) {
+            // recursively add all descending children into the array as indexes
+            // modify the structure
             // redraw loop
             pileUp(context);
+	    while(pileUpArr.length) {
+	      data.entries.splice(pileUpArr.pop(), 1);
+	    }
+	    context = current.hasParent;
+            saveAndRedraw();
         }
     }
     if (e.target.id === "logout") {
