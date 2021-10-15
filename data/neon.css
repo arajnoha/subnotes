@@ -24,6 +24,11 @@ ul li {
     cursor: pointer;
     user-select: none;
     position: relative;
+    transition: background 300ms ease;
+}
+ul li:hover {
+    background: #eee;
+    border-radius: 4px;
 }
 ul li::after {
     content: attr(data-date);

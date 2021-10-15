@@ -198,7 +198,7 @@ document.addEventListener("click", function(e) {
         document.querySelector("#save-note").classList.add("hidden");
     }
     if (e.target.id === "rename-note") {
-        let newName = prompt("Type in new name of this note '"+contextFilter.name+"':");
+        let newName = prompt("Type in new name of this note '"+contextFilter.name+"':", contextFilter.name);
         if (newName) {
             contextFilter.name = newName;
             saveAndRedraw();
@@ -208,7 +208,7 @@ document.addEventListener("click", function(e) {
     }
     if (e.target.id === "rename-folder") {
         let oldName = data.entries.find(object => object.id == context);
-        let newName = prompt("Type in new name of this folder '"+oldName.name+"':");
+        let newName = prompt("Type in new name of this folder '"+oldName.name+"':", oldName.name);
         if (newName) {
             oldName.name = newName;
             saveAndRedraw();
