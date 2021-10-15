@@ -9,6 +9,7 @@ let nameFilter;
 let contextFilter;
 let areaBuffer;
 let pileUpArr = [];
+let yellowMode = false;
 
 function populateLoop(data, context) {
     // get all records
@@ -53,6 +54,17 @@ function populateLoop(data, context) {
             let options = {year: 'numeric', month: 'numeric', day: 'numeric'};
             li.dataset.date = date.toLocaleDateString('cs', options);
             loop.appendChild(li);
+    }
+
+    // if in yellow-mode, add pastable note at the bottom of the loop
+    if (yellowMode) {
+        let pastable = document.createElement("li");
+        pastable.textContent = contextFilter.name;
+        pastable.className = "file pastable";
+        let date = new Date(contextFilter.id);
+        let options = {year: 'numeric', month: 'numeric', day: 'numeric'};
+        pastable.dataset.date = date.toLocaleDateString('cs', options);
+        loop.appendChild(pastable);
     }
 }
 function pileUp(entry) {
@@ -190,6 +202,24 @@ document.addEventListener("click", function(e) {
     if (e.target.id === "go-back") {
         document.querySelectorAll("section.old")[0].classList.toggle("hidden");
         document.querySelectorAll("section.detail")[0].classList.toggle("hidden");
+    }
+    if (e.target.id === "move") {
+        yellowMode = true;
+        populateLoop(data, context);
+        document.querySelectorAll("section.old")[0].classList.toggle("hidden");
+        document.querySelectorAll("section.detail")[0].classList.toggle("hidden");
+        document.body.classList.add("yellow-mode");
+    }
+    if (e.target.id === "paste") {
+        contextFilter.hasParent = context;
+        yellowMode = false;
+        document.body.classList.remove("yellow-mode");
+        saveAndRedraw();
+    }
+    if (e.target.id === "close-yellow-mode") {
+        yellowMode = false;
+        document.body.classList.remove("yellow-mode");
+        populateLoop(data, context);
     }
     if (e.target.id === "save-note") {
         contextFilter.content = area.value;

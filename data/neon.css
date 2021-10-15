@@ -103,7 +103,8 @@ button#logout,
 button#delete-note,
 button#delete-folder,
 button#rename-note,
-button#rename-folder {
+button#rename-folder,
+button#move {
     float: right;
 }
 button {
@@ -132,6 +133,9 @@ button#add-note {
 button#go-back {
     background-image: url("ui/arrow-left.svg");
 }
+button#close-yellow-mode {
+    background-image: url("ui/close.svg");
+}
 button#save-note {
     background-size: 65%;
     background-color: #c9e9ee;
@@ -139,6 +143,15 @@ button#save-note {
 }
 button#logout {
     background-image: url("ui/logout.svg");
+}
+button#move {
+    background-size: 65%;
+    background-image: url("ui/cut.svg");
+}
+button#paste {
+    background-size: 70%;
+    background-color: rgb(227, 230, 82);
+    background-image: url("ui/paste.svg");
 }
 button#delete-note,
 button#delete-folder {
@@ -178,6 +191,35 @@ textarea {
 section {
     height: 100%;
     position: relative;
+}
+.yellow-mode #add-note,
+.yellow-mode #add-folder,
+.yellow-mode #logout,
+.yellow-mode #delete-folder,
+.yellow-mode #rename-folder {
+    display: none;
+}
+.yellow-mode #close-yellow-mode,
+.yellow-mode #paste {
+    display: inline-block;
+}
+.yellow-mode ul li.file {
+    color: #777;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+.yellow-mode ul li.file::before {
+    filter: grayscale(1);
+}
+.yellow-mode ul li.file:hover {
+    background: none;
+}
+.yellow-mode ul li.file.pastable {
+    border: 1px dashed #c5c51c;
+    color: #c5c51c;
+}
+.yellow-mode ul li.file.pastable::before {
+    filter: hue-rotate(237deg);
 }
 .hidden {
     display: none;
