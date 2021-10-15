@@ -25,6 +25,10 @@ ul li {
     user-select: none;
     position: relative;
     transition: background 300ms ease;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 84px;
 }
 ul li:hover {
     background: #eee;
@@ -35,6 +39,10 @@ ul li::after {
     float: right;
     color: #ccc;
     font-size: 12px;
+    position: absolute;
+    top: 3px;
+    right: 0;
+    left: auto;
 }
 ul li::before {
     content: "";
@@ -153,6 +161,10 @@ button#rename-folder {
     display: inline-block;
     transform: translateX(-50%);
     padding: 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 80%;
 }
 textarea {
     width: 100%;
