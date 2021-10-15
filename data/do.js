@@ -8,6 +8,7 @@ let currentName;
 let nameFilter;
 let contextFilter;
 let areaBuffer;
+let pastingElement;
 let pileUpArr = [];
 let yellowMode = false;
 
@@ -33,10 +34,12 @@ function populateLoop(data, context) {
         loop.appendChild(li);
         document.querySelector("#delete-folder").classList.remove("hidden");
         document.querySelector("#rename-folder").classList.remove("hidden");
+        document.querySelector("#move").classList.remove("hidden");
         document.querySelectorAll(".note-name")[0].textContent = parent.name;
     } else {
         document.querySelector("#delete-folder").classList.add("hidden");
         document.querySelector("#rename-folder").classList.add("hidden");
+        document.querySelector("#move").classList.add("hidden");
         document.querySelectorAll(".note-name")[0].textContent = "";
     }
 
@@ -59,9 +62,19 @@ function populateLoop(data, context) {
     // if in yellow-mode, add pastable note at the bottom of the loop
     if (yellowMode) {
         let pastable = document.createElement("li");
-        pastable.textContent = contextFilter.name;
-        pastable.className = "file pastable";
-        let date = new Date(contextFilter.id);
+        pastable.textContent = pastingElement.name;
+        if (pastingElement.isParent === true) {
+            pastable.className = "folder pastable";
+        } else {
+            pastable.className = "file pastable";
+        }
+
+        // hide itself from the loop (so user cannot insert it onto/into itself)
+        if (document.querySelectorAll("ul li[data-id='"+pastingElement.id+"']").length > 0) {
+            document.querySelectorAll("ul li[data-id='"+pastingElement.id+"']")[0].classList.add("hidden");
+        }
+
+        let date = new Date(pastingElement.id);
         let options = {year: 'numeric', month: 'numeric', day: 'numeric'};
         pastable.dataset.date = date.toLocaleDateString('cs', options);
         loop.appendChild(pastable);
@@ -205,13 +218,40 @@ document.addEventListener("click", function(e) {
     }
     if (e.target.id === "move") {
         yellowMode = true;
-        populateLoop(data, context);
-        document.querySelectorAll("section.old")[0].classList.toggle("hidden");
-        document.querySelectorAll("section.detail")[0].classList.toggle("hidden");
         document.body.classList.add("yellow-mode");
+
+        // moving the whole current folder
+        if (document.querySelectorAll("section.detail")[0].classList.contains("hidden")) {
+            pastingElement = data.entries.find(row => row.id == context);
+            let showParent;
+
+            // if the moving folder is a direct child of root, show root, otherwise, show parent
+            if (pastingElement.hasParent != false) {
+                showParent = data.entries.find(row => row.id == pastingElement.hasParent).id;
+            } else {
+                showParent = false;
+            }
+            context = showParent;
+
+        // moving just this note
+        } else {
+            document.querySelectorAll("section.old")[0].classList.toggle("hidden");
+            document.querySelectorAll("section.detail")[0].classList.toggle("hidden");
+            pastingElement = contextFilter;
+        }
+
+        populateLoop(data, context);
+
     }
+
     if (e.target.id === "paste") {
-        contextFilter.hasParent = context;
+        // if moving object is folder
+        if (document.querySelectorAll("ul li.pastable")[0].classList.contains("folder")) {
+            pastingElement.hasParent = context;
+        // or a file
+        } else {
+            contextFilter.hasParent = context;
+        }
         yellowMode = false;
         document.body.classList.remove("yellow-mode");
         saveAndRedraw();

@@ -196,7 +196,8 @@ section {
 .yellow-mode #add-folder,
 .yellow-mode #logout,
 .yellow-mode #delete-folder,
-.yellow-mode #rename-folder {
+.yellow-mode #rename-folder,
+.yellow-mode #move {
     display: none;
 }
 .yellow-mode #close-yellow-mode,
@@ -211,14 +212,16 @@ section {
 .yellow-mode ul li.file::before {
     filter: grayscale(1);
 }
-.yellow-mode ul li.file:hover {
+.yellow-mode ul li.file:hover,
+.yellow-mode ul li.pastable:hover {
     background: none;
 }
-.yellow-mode ul li.file.pastable {
+.yellow-mode ul li.pastable {
     border: 1px dashed #c5c51c;
     color: #c5c51c;
+    pointer-events: none;
 }
-.yellow-mode ul li.file.pastable::before {
+.yellow-mode ul li.pastable::before {
     filter: hue-rotate(237deg);
 }
 .hidden {
