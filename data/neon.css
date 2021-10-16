@@ -104,7 +104,8 @@ button#delete-note,
 button#delete-folder,
 button#rename-note,
 button#rename-folder,
-button#move {
+button#move,
+button#search {
     float: right;
 }
 button {
@@ -133,7 +134,8 @@ button#add-note {
 button#go-back {
     background-image: url("ui/arrow-left.svg");
 }
-button#close-yellow-mode {
+button#close-yellow-mode,
+button#close-red-mode {
     background-image: url("ui/close.svg");
 }
 button#save-note {
@@ -143,6 +145,10 @@ button#save-note {
 }
 button#logout {
     background-image: url("ui/logout.svg");
+}
+button#search {
+    background-size: 60%;
+    background-image: url("ui/search.svg");
 }
 button#move {
     background-size: 65%;
@@ -192,12 +198,35 @@ section {
     height: 100%;
     position: relative;
 }
+.red-mode #add-note,
+.red-mode #add-folder,
+.red-mode #logout,
+.red-mode #delete-folder,
+.red-mode #rename-folder,
+.red-mode #move {
+    display: none;
+}
+.red-mode #search,
+.red-mode #close-red-mode {
+    display: inline-block;
+}
+.red-mode ul li {
+    color: #ca5656;
+}
+.red-mode ul li.file::before {
+    filter: hue-rotate(163deg);
+}
+.red-mode ul li.folder::before {
+    filter: hue-rotate(90deg);
+    opacity: 0.8;
+}
 .yellow-mode #add-note,
 .yellow-mode #add-folder,
 .yellow-mode #logout,
 .yellow-mode #delete-folder,
 .yellow-mode #rename-folder,
-.yellow-mode #move {
+.yellow-mode #move,
+.yellow-mode #search {
     display: none;
 }
 .yellow-mode #close-yellow-mode,

@@ -11,6 +11,7 @@ let areaBuffer;
 let pastingElement;
 let pileUpArr = [];
 let yellowMode = false;
+let redMode = false;
 
 function populateLoop(data, context) {
     // get all records
@@ -78,6 +79,30 @@ function populateLoop(data, context) {
         let options = {year: 'numeric', month: 'numeric', day: 'numeric'};
         pastable.dataset.date = date.toLocaleDateString('cs', options);
         loop.appendChild(pastable);
+    }
+}
+function populateSearchLoop(string) {
+    let contentful = data.entries.filter(obj => obj.content);
+    let contentSearch = contentful.filter(obj => obj.content.includes(string));
+    let nameSearch = data.entries.filter(obj => obj.name.includes(string));
+    let fullSearch = contentSearch.concat(nameSearch.filter((item) => contentSearch.indexOf(item) < 0));
+    loop.innerHTML = "";
+    document.body.classList.add("red-mode");
+    redMode = true;
+
+    for (item of fullSearch) {
+        const li = document.createElement("li");
+        li.textContent = item.name;
+        li.dataset.id = item.id;
+        if (item.isParent === true) {
+            li.className = "folder";
+        } else {
+            li.className = "file";
+        }
+        let date = new Date(item.id);
+        let options = {year: 'numeric', month: 'numeric', day: 'numeric'};
+        li.dataset.date = date.toLocaleDateString('cs', options);
+        loop.appendChild(li);
     }
 }
 function pileUp(entry) {
@@ -193,6 +218,19 @@ document.addEventListener("click", function(e) {
         }
     }
     if (e.target.closest("#loop > li")) {
+        if (redMode) {
+            redMode = false;
+            document.body.classList.remove("red-mode");
+            // re-do context bceause when coming from search,
+            // there is no data on the clicked parent folder
+            if (e.target.classList.contains("file")) {
+                context = data.entries.find(obj => obj.id == e.target.dataset.id).hasParent;
+                // populate on background while note detail is
+                // opening so back button works correctly
+                populateLoop(data, context);
+            }
+        }
+
         if (e.target.classList.contains("folder")) {
             context = (e.target.dataset.id === "false") ? false : e.target.dataset.id;
             populateLoop(data, context);
@@ -261,6 +299,11 @@ document.addEventListener("click", function(e) {
         document.body.classList.remove("yellow-mode");
         populateLoop(data, context);
     }
+    if (e.target.id === "close-red-mode") {
+        redMode = false;
+        document.body.classList.remove("red-mode");
+        populateLoop(data, context);
+    }
     if (e.target.id === "save-note") {
         contextFilter.content = area.value;
         // save but stay in note (redraw currently hidden listing)
@@ -274,6 +317,12 @@ document.addEventListener("click", function(e) {
             saveAndRedraw();
             document.querySelectorAll("section.old")[0].classList.toggle("hidden");
             document.querySelectorAll("section.detail")[0].classList.toggle("hidden");
+        }
+    }
+    if (e.target.id === "search") {
+        let search = prompt("What are you looking for?");
+        if (search) {
+            populateSearchLoop(search);
         }
     }
     if (e.target.id === "rename-folder") {
