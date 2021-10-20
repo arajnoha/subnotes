@@ -4,6 +4,7 @@ const area = document.querySelector("#single");
 let data = {};
 let context = false;
 let password;
+let hash;
 let currentName;
 let nameFilter;
 let contextFilter;
@@ -12,6 +13,12 @@ let pastingElement;
 let pileUpArr = [];
 let yellowMode = false;
 let redMode = false;
+
+if (localStorage.getItem("password")) {
+    password = localStorage.getItem("password");
+    hash = localStorage.getItem("hash");
+    login(password, hash);
+}
 
 function populateLoop(data, context) {
     // get all records
@@ -114,52 +121,7 @@ function pileUp(entry) {
     }
 }
 
-function saveAndRedraw(entry) {
-    if (entry) {
-        data.entries.push(entry);
-    }
-    let source = "data/save.php";
-    let request = new XMLHttpRequest();
-    let package = JSON.stringify(data);
-    package = CryptoJS.AES.encrypt(package, password).toString();
-    request.open("POST", source, true);
-    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    request.send(package);
-
-    request.onload = function() {
-        let recieved = CryptoJS.AES.decrypt(request.response, password).toString(CryptoJS.enc.Utf8);
-        populateLoop(JSON.parse(recieved), context);
-    }
-}
-
-function washingMachine(password, rounds) {
-
-    let result = password;
-    while(rounds--) {
-        result = CryptoJS.SHA256(result + rounds);
-    }
-    return result.toString();
-}
-
-area.addEventListener("keyup", function(e) {
-    if (area.value !== areaBuffer) {
-        document.querySelector("#save-note").classList.remove("hidden");
-    } else {
-        document.querySelector("#save-note").classList.add("hidden");
-    }
-});
-
-document.addEventListener("click", function(e) {
-
-      if (e.target.id === "login") {
-        e.preventDefault();
-
-        // get password, hash him well and clear the DOM input of it
-        let passwordFromInput = document.querySelector("#password").value;
-        let hash = washingMachine(passwordFromInput, 1000);
-        password = washingMachine(passwordFromInput, 100);
-        document.querySelector("#password").value = "";
-
+function login(password, hash) {
         // verify password
         let verify = new XMLHttpRequest();
         verify.open("POST", "data/auth.php", true);
@@ -216,6 +178,63 @@ document.addEventListener("click", function(e) {
             }
 
         }
+}
+
+function saveAndRedraw(entry) {
+    if (entry) {
+        data.entries.push(entry);
+    }
+    let source = "data/save.php";
+    let request = new XMLHttpRequest();
+    let package = JSON.stringify(data);
+    package = CryptoJS.AES.encrypt(package, password).toString();
+    request.open("POST", source, true);
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    request.send(package);
+
+    request.onload = function() {
+        let recieved = CryptoJS.AES.decrypt(request.response, password).toString(CryptoJS.enc.Utf8);
+        populateLoop(JSON.parse(recieved), context);
+    }
+}
+
+function washingMachine(password, rounds) {
+
+    let result = password;
+    while(rounds--) {
+        result = CryptoJS.SHA256(result + rounds);
+    }
+    return result.toString();
+}
+
+area.addEventListener("keyup", function(e) {
+    if (area.value !== areaBuffer) {
+        document.querySelector("#save-note").classList.remove("hidden");
+    } else {
+        document.querySelector("#save-note").classList.add("hidden");
+    }
+});
+
+document.addEventListener("click", function(e) {
+
+      if (e.target.id === "login") {
+        e.preventDefault();
+
+        // get password, hash him well and clear the DOM input of it
+        let passwordFromInput = document.querySelector("#password").value;
+        let stayLogged = document.querySelector("#stay-logged").checked;
+        hash = washingMachine(passwordFromInput, 1000);
+        password = washingMachine(passwordFromInput, 100);
+        document.querySelector("#password").value = "";
+
+        // if the user wants to, save both password and hash to localStorage
+        if (stayLogged) {
+            localStorage.setItem("password", password);
+            localStorage.setItem("hash", hash);
+        }
+
+        // perform verification
+        login(password, hash);
     }
     if (e.target.closest("#loop > li")) {
         if (redMode) {
@@ -357,6 +376,8 @@ document.addEventListener("click", function(e) {
         }
     }
     if (e.target.id === "logout") {
+        localStorage.removeItem('password');
+        localStorage.removeItem('hash');
         window.location.href = "";
     }
     if (e.target.id === "add-note") {
