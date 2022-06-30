@@ -15,6 +15,19 @@ You will choose your password on the first opening as it recognises no hash gene
 The installation is very small, but you can go even further and minify the content of data/ if you need.
 **Timestamps** in the listing are using czech locale/format. You can change this to english or any other format in _data/do.js_ on line 54 in _toLocaleDateString('cs', options)_ to yours.
 
+### Future & what am I working on
+[ ] - change password option (requires reencrypting the vault)
+[ ] - ability  of a user to change the order of displayed notes
+[ ] - keyboard shortcuts from common text editors
+[ ] - backlinking from other notes & displaying what notes link to selected one
+
 ### Get along
 Merge requests are welcomed.
 Get in touch with me on adam@rajnoha.com for questions, tips and chitchat.
+
+If you wish to support me and the development, here is my BTC address:
+1JGRuQqXk4me1us9iT9saw42iY1EFSbYcy
+
+Or you can use Liberapay here:
+https://liberapay.com/privacydeep/
+
