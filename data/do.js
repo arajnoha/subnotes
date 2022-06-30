@@ -14,12 +14,6 @@ let pileUpArr = [];
 let yellowMode = false;
 let redMode = false;
 
-if (localStorage.getItem("password")) {
-    password = localStorage.getItem("password");
-    hash = localStorage.getItem("hash");
-    login(password, hash);
-}
-
 function populateLoop(data, context) {
     // get all records
     const rows = data.entries;
@@ -222,16 +216,9 @@ document.addEventListener("click", function(e) {
 
         // get password, hash him well and clear the DOM input of it
         let passwordFromInput = document.querySelector("#password").value;
-        let stayLogged = document.querySelector("#stay-logged").checked;
         hash = washingMachine(passwordFromInput, 1000);
         password = washingMachine(passwordFromInput, 100);
         document.querySelector("#password").value = "";
-
-        // if the user wants to, save both password and hash to localStorage
-        if (stayLogged) {
-            localStorage.setItem("password", password);
-            localStorage.setItem("hash", hash);
-        }
 
         // perform verification
         login(password, hash);
@@ -376,8 +363,6 @@ document.addEventListener("click", function(e) {
         }
     }
     if (e.target.id === "logout") {
-        localStorage.removeItem('password');
-        localStorage.removeItem('hash');
         window.location.href = "";
     }
     if (e.target.id === "add-note") {

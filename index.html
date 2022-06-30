@@ -5,7 +5,7 @@
     <title></title>
     <link rel="stylesheet" type="text/css" href="data/neon.css?v=6">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="description" content="Subnotes - private, secure, flatfile encrypted note-taking app.">
+    <meta name="description" content="Subnotes - private, secure, flatfile encrypted note-taking app based on zero-knowledge principle.">
     <link rel="icon" type="image/png" href="data/favicon.png">
 </head>
 <body>
@@ -31,9 +31,7 @@
 
     <form action="" method="post">
     <input type="password" name="password" placeholder="Fill in your password here..." id="password" autofocus>
-    <input type="submit" id="login" value="Log in/Sign up"><br>
-    <input type="checkbox" id="stay-logged" name="stay-logged">
-    <label for="stay-logged">Stay logged until you log-out manually</label>
+    <input type="submit" id="login" value="Log in/Sign up">
     </form>
 
 </section>
@@ -46,7 +44,7 @@
     <button id="rename-note" title="rename this note"></button>
     <span class="note-name"></span>
     <hr>
-    <textarea id="single"></textarea>
+    <textarea id="single" spellcheck="false"></textarea>
 </section>
 
 <script src="data/crypto.js"></script>

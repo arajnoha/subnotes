@@ -198,12 +198,6 @@ section {
     height: 100%;
     position: relative;
 }
-section.new #stay-logged {
-    margin-top: 30px;
-}
-section.new #stay-logged + label {
-    display: inline;
-}
 .red-mode #add-note,
 .red-mode #add-folder,
 .red-mode #logout,
